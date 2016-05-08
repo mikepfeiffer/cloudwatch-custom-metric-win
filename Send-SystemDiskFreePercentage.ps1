@@ -22,7 +22,7 @@ process {
         Write-Output $result
     }
     else {
-        Write-Output "Retrieving instance id from EC2 instance meta-data"
+        Write-Verbose "Retrieving instance id from EC2 instance meta-data"
         $instanceId = Invoke-RestMethod http://169.254.169.254/latest/meta-data/instance-id
 
         $dimensions = "Name=InstanceId,Value=$instanceId"
