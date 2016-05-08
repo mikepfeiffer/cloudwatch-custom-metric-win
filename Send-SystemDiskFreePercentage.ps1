@@ -2,7 +2,7 @@
 param(
     [Parameter(Position=0, ValueFromPipelineByPropertyName=$true, Mandatory=$false)]
     [String]
-    $Name = $env:COMPUTERNAME,
+    $ComputerName = $env:COMPUTERNAME,
 
     [switch]
     $ViewOnly
@@ -10,10 +10,10 @@ param(
   
 process {
     Write-Verbose "Gathering performance monitor data"
-    $free = Get-Counter "\LogicalDisk(c:)\% Free Space" -comp $Name
+    $free = Get-Counter "\LogicalDisk(c:)\% Free Space" -comp $ComputerName
 
     $result = $free.CounterSamples | ?{$_.InstanceName -match ":"} | 
-        select @{n="Server";e={$Name}},
+        select @{n="Server";e={$ComputerName}},
                @{n="Drive";e={$_.InstanceName}},
 	           @{n="PercentFree";e={[Math]::Round($_.CookedValue,2)}}
     
