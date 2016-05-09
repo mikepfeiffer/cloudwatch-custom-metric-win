@@ -1,11 +1,16 @@
 ﻿[CmdletBinding()]
 param(
-    [Parameter(Position=0, ValueFromPipelineByPropertyName=$true, Mandatory=$false)]
+    [Parameter(ValueFromPipelineByPropertyName=$true, Mandatory=$false)]
     [String]
     $ComputerName = $env:COMPUTERNAME,
 
     [switch]
-    $ViewOnly
+    $ViewOnly,
+
+    [Parameter(Mandatory=$false)]
+    [ValidateSet('eu-west-1','ap-southeast-1','ap-southeast-2','eu-central-1','ap-northeast-2','ap-northeast-1','us-east-1','sa-east-1','us-west-1','us-west-2')]
+    [String]
+    $Region = 'us-west-2'
 )
   
 process {
@@ -31,6 +36,7 @@ process {
         aws cloudwatch put-metric-data --metric-name RootVolPercentFree `
         --namespace Windows `
         --dimensions $dimensions `
-        --value $result.PercentFree
+        --value $result.PercentFree `
+        --region $Region
     }
 }
